@@ -20,8 +20,8 @@ class AbstractStampedModel(models.Model):
     . fields.
     updating ``created`` and ``modified``
     """
-    cr = models.DateTimeField(auto_now_add=True)
-    mod = models.DateTimeField(auto_now=True)
+    cr = models.TimeField(auto_now_add=True)
+    mod = models.TimeField(auto_now=True)
 
     
     class Meta:

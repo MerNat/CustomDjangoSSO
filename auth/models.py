@@ -1,7 +1,7 @@
 from django.db import models
-from core.abs-models import *
+from .core.absmodels import *
 
 # Create your models here.
 
-class Studio(TimeStampedModels):
+class Studio(DateTimeStampedModel,AbstractStampedModel):
     name = models.CharField(max_length=40)
