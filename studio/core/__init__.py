@@ -1,1 +1,1 @@
-from .abs-models import *
+from .absmodels import *
