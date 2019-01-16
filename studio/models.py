@@ -1,15 +1,7 @@
 from django.db import models
+from core.abs-models import *
 
 # Create your models here.
-class TimeStampedModel(models.Model):
-    """
-    An abstract base class model that provides self-
-    . fields.
-    updating ``created`` and ``modified``
-    """
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
 
-    
-    class Meta:
-        abstract = True
+class Studio(TimeStampedModels):
+    name = models.CharField(max_length=40)
