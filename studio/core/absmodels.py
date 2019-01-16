@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class TimeStampedModel(models.Model):
+class DateTimeStampedModel(models.Model):
     """
     An abstract base class model that provides self-
     . fields.
@@ -9,6 +9,19 @@ class TimeStampedModel(models.Model):
     """
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    
+    class Meta:
+        abstract = True
+
+class AbstractStampedModel(models.Model):
+    """
+    An abstract base class model that provides self-
+    . fields.
+    updating ``created`` and ``modified``
+    """
+    cr = models.DateTimeField(auto_now_add=True)
+    mod = models.DateTimeField(auto_now=True)
 
     
     class Meta:
