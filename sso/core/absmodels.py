@@ -7,7 +7,7 @@ class DateTimeStampedModel(models.Model):
     . fields.
     updating ``created`` and ``modified``
     """
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True)
 
     
