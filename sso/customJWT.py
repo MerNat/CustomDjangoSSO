@@ -10,3 +10,10 @@ def jwt_payload_handler(user):
                 'last_name': user.last_name,
                 'email': user.email
             }
+
+def jwt_response_payload_handler(token, user=None, request=None):
+    """ Return Verified Token """
+
+    return {
+        'token': token
+    }

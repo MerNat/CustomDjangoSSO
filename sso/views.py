@@ -58,10 +58,24 @@ class LoginViewset(viewsets.ViewSet, MethodSerializerView):
             if check_password(data['password'],user.password):
                 payload = jwt_payload_handler(user)
                 token = jwt_encode_handler(payload)
-                return Response(data={'token':token},status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_404_NOT_FOUND)
         except Exception as Err:
             MyErrorException(Err, "")
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        return Response(data=token,status=status.HTTP_200_OK)
+        return Response(data={'token':token},status=status.HTTP_200_OK)
+
+class VerifyViewset(viewsets.ViewSet, MethodSerializerView):
+    """ Login a User """
+    queryset = User.objects.all()
+    method_serializer_classes = {
+        ('POST')
+    }
+    def create(self, request, format=None):
+        try:
+            data = request.data
+            payload = jwt_decode_handler(data['token'])
+        except Exception as Err:
+            MyErrorException(Err, "")
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={'token': payload},status=status.HTTP_200_OK)
