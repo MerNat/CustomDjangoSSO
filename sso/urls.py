@@ -6,5 +6,6 @@ from django.conf.urls import url
 my_router = DefaultRouter()
 
 my_router.register(r'register', views.RegisterUserViewset, base_name='Register')
+my_router.register(r'login', views.LoginViewset, base_name='Login')
 
 urlpatterns = my_router.urls

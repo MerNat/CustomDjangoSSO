@@ -4,7 +4,9 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 from .serializerUtility import MethodSerializerView
 from django.contrib.auth.hashers import make_password, check_password
+from .customJWT import jwt_payload_handler
 from .err import MyErrorException
+from rest_framework_jwt.settings import api_settings
 from .serializers import (
     RegisterSerializer,
     LoginSerializer
@@ -12,6 +14,9 @@ from .serializers import (
 from .models import (
     User
 )
+
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
 # Create your views here.
 
@@ -21,7 +26,6 @@ class RegisterUserViewset(viewsets.ViewSet, MethodSerializerView):
     method_serializer_classes = {
         ('POST'): RegisterSerializer
     }
-    # serializer_class = RegisterSerializer
 
     def create(self, request, format=None):
         try:
@@ -41,4 +45,23 @@ class RegisterUserViewset(viewsets.ViewSet, MethodSerializerView):
             return Response(status=status.HTTP_400_BAD_REQUEST)  
         return Response(status=status.HTTP_201_CREATED)
 
-
+class LoginViewset(viewsets.ViewSet, MethodSerializerView):
+    """ Login a User """
+    queryset = User.objects.all()
+    method_serializer_classes = {
+        ('POST'): LoginSerializer
+    }
+    def create(self, request, format=None):
+        try:
+            data = request.data
+            user = User.objects.get(email=data['email'])
+            if check_password(data['password'],user.password):
+                payload = jwt_payload_handler(user)
+                token = jwt_encode_handler(payload)
+                return Response(data={'token':token},status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as Err:
+            MyErrorException(Err, "")
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(data=token,status=status.HTTP_200_OK)
