@@ -34,7 +34,7 @@ class RegisterUserViewset(viewsets.ViewSet, MethodSerializerView):
             l_name = data['l_name']
             email = data['email']
             password = data['password']
-            user_creation = User.objects.create(
+            User.objects.create(
                 first_name = f_name,
                 last_name = l_name,
                 email = email,
